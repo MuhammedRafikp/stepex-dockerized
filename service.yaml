@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stepex-e-com
+spec:
+  type: LoadBalancer  # Use NodePort for local clusters like Minikube
+  ports:
+    - port: 80  # External port
+      targetPort: 3000  # Port your application listens on
+  selector:
+    app: stepex-e-com

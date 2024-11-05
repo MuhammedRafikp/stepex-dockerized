@@ -7,6 +7,7 @@ import Wallet from "../models/walletModel.js";
 import Coupon from "../models/couponModel.js";
 import Razorpay from "razorpay";
 
+dotenv.config();
 
 const { RAZORPAY_ID_KEY, RAZORPAY_SECRET_KEY } = process.env;
 

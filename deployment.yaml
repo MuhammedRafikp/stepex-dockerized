@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stepex-e-com
+spec:
+  replicas: 1  # Number of replicas you want to run
+  selector:
+    matchLabels:
+      app: stepex-e-com
+  template:
+    metadata:
+      labels:
+        app: stepex-e-com
+    spec:
+      containers:
+      - name: stepex-e-com
+        image: rafikp10/stepex-e-com:latest # Use your image name here
+        ports:
+        - containerPort: 3000  # Change this to your application's port
