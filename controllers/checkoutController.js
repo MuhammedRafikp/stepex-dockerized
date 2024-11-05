@@ -6,6 +6,7 @@ import Order from "../models/orderModel.js";
 import Wallet from "../models/walletModel.js";
 import Coupon from "../models/couponModel.js";
 import Razorpay from "razorpay";
+import dotenv from 'dotenv';
 
 dotenv.config();
 
