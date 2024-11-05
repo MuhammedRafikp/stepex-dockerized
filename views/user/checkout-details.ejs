@@ -1,0 +1,494 @@
+<%- include("../layouts/header.ejs") %>
+
+
+	<style>
+		.hero-wrap {
+			margin-top: 110px;
+			display: flex;
+			align-items: center;
+
+		}
+
+		.shop-heading {
+			text-align: left;
+		}
+
+		.breadcrumbs {
+			text-align: right;
+		}
+
+		.card {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			min-width: 0;
+			word-wrap: break-word;
+			background-color: #f8f9fa8f;
+			background-clip: border-box;
+			border: 1 solid;
+			border-radius: .25rem;
+			margin-bottom: 1.5rem;
+			box-shadow: 0 2px 6px 0 rgba(218, 218, 253, 50%), 0 2px 6px 0 rgb(206 206 238 / 50%);
+		}
+
+		.me-2 {
+			margin-right: .5rem !important;
+		}
+	</style>
+
+	<style>
+		.coupon-card {
+			background: #dbcc8f;
+			color: #fff;
+			text-align: center;
+			border-radius: 15px;
+			box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.15);
+			position: relative;
+		}
+
+		.logo {
+			width: 50px;
+			border-radius: 8px;
+			margin-bottom: 10px;
+		}
+
+		.coupon-card h3 {
+
+			font-size: 15px;
+			font-weight: 600;
+		}
+
+		.coupon-card p {
+			font-size: 13px;
+		}
+
+		.coupon-row {
+			display: flex;
+			align-items: center;
+			margin: 15px auto;
+			width: fit-content;
+		}
+
+		#cpnCode {
+			border: 1px dashed #fff;
+			padding: 5px 10px;
+			border-right: 0;
+		}
+
+		#cpnBtn {
+			border: 1px solid #fff;
+			background: #fff;
+			padding: 5px 10px;
+			color: black;
+			cursor: pointer;
+		}
+
+		.circle1,
+		.circle2 {
+			background: #ffffff;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		.circle1 {
+			left: -25px;
+		}
+
+		.circle2 {
+			right: -25px;
+		}
+	</style>
+
+
+
+	<!---- breadcrumbs---->
+	<div style="background-color: #f0f0f0; height: 60px; z-index: 1;" class="hero-wrap">
+		<div class="container">
+			<div class="row no-gutters slider-text align-items-start">
+
+				<div class="col-md-6 ftco-animate shop-heading">
+					<h6 style="font-weight: bold; color: #000;">CHECKOUT</h6>
+				</div>
+
+				<div class="col-md-6 ftco-animate breadcrumbs">
+					<div class="breadcrumbs">
+						<span class="mr-2">
+							<a href="/"><span class="icon-home"></span>Home ></a>
+							<a href="/cart">cart ></a>
+							<a href="/checkout-details">checkout</a>
+						</span>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<section class="ftco-section ">
+		<div class="container  d-grid justify-content-between" style="margin-top:-50px;">
+			<div class="container">
+				<div class="main-body">
+
+					<div class="row  ">
+						<div class="col-lg-8 ftco-animate">
+							<div class="card">
+								<div class="card-body  ">
+
+									<div class="d-flex justify-content-between   mb-3">
+										<h6 class="mb-0" style="font-weight: bold; color: #000;">Your Addresses</h6>
+										<button class="btn btn-primary py-2 px-3 rounded" data-toggle="modal"
+											data-target="#addAddressModal">
+											<span class="icon-plus mx-2"></span>
+											<span class="font-weight-bold">Add a new address</span>
+										</button>
+									</div>
+									<hr>
+
+									<% if (address && address.address.length>0) { %>
+										<div class="row">
+											<% address.address.forEach((address,index)=> { %>
+												<div class="col-lg-6 ">
+													<div class="card">
+														<div class="card-body">
+
+															<input type="radio" name="address" value="<%= index %>">
+
+															<p class="mb-0 ">
+																<%= address.name %>
+															</p>
+															<p class="mb-0">
+																<%= address.street_address %>
+															</p>
+															<p class="mb-0">
+																<%= address.place %>
+															</p>
+															<p class="mb-0">
+																<%= address.city %>,<%= address.state %>
+															</p>
+															<p class="mb-0">Mobile:<%= address.mobile %>
+															</p>
+															<p class="mb-0">
+																<%= address.pincode %>
+															</p>
+															<hr>
+															<button class="btn btn-black btn-edit" data-toggle="modal"
+																data-target="#editAddressModal"
+																data-address-index="<%=index %>"
+																data-address-name="<%= address.name %>"
+																data-address-street="<%= address.street_address %>"
+																data-address-place="<%= address.place %>"
+																data-address-city="<%= address.city %>"
+																data-address-state="<%= address.state %>"
+																data-address-mobile="<%= address.mobile %>"
+																data-address-pincode="<%= address.pincode %>">
+																Edit
+															</button>
+
+														</div>
+													</div>
+												</div>
+
+
+												<% }) %>
+
+										</div>
+										<% } else { %>
+											<div>
+												<div class="d-flex justify-content-center ">
+													<img width="75" height="75"
+														src="\assets\images\no-address-added.png" alt="">
+												</div>
+												<div class="d-flex justify-content-center ">
+
+													<h6 style="font-weight: 600;">No address added yet.
+													</h6>
+												</div>
+											</div>
+											<% } %>
+
+												<% if (address && address.address.length>0) { %>
+													<div class="d-flex justify-content-sm-start mt-3">
+														<button class="btn btn-info py-2 px-3 select-address rounded">
+															<span class="font-weight-bold">Use this address</span>
+														</button>
+													</div>
+													<% } %>
+
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-4 cart-wrap ftco-animate">
+							<div class="card">
+								<div class="card-body">
+
+									<div class="cart-total mb-3 ">
+										<% cart.items.reverse().forEach((item,index)=> { %>
+											<% if(!item.products.is_delete){ %>
+
+												<div class="row">
+													<div class="col-lg-4">
+														<img src="\uploads\productImages\<%= item.products.images[0]%>"
+															width="80" height="80" alt="">
+													</div>
+
+													<div class="col-lg-8 ">
+														<div class="row">
+															<div class="col-lg-12">
+																<span style="color: #000; font-size: 13px;">
+																	<%= item.products.name%>
+																</span>
+															</div>
+														</div>
+														<div class="row ">
+															<div class="col-lg-12">
+																<span style="font-size: 13px;">
+																	₹<%= Math.round(item.products.offer_price) %> X <%=
+																			item.quantity%>
+																</span>
+															</div>
+														</div>
+													</div>
+												</div>
+												<%if(index !==cart.items.length-1){%>
+													<hr>
+													<%}%>
+
+														<%} %>
+															<% }); %>
+
+
+									</div>
+
+
+									<div class="my-2 d-flex justify-content-center ">
+										<a href="#" class="text-primary font-weight-bold" data-toggle="modal"
+											data-target="#couponModal">
+											<span class="icon-tags mx-1"></span> Check available coupons
+										</a>
+									</div>
+									<% if(req.session.discount){%>
+										<div class="mb-1 d-flex justify-content-center ">
+											<span class="text-success mt-1 ">Coupon applied ✔</span>
+											<span id="remove-coupon-btn" class="text-danger btn ">Remove </span>
+										</div>
+										<%}%>
+											<% if(req.session.discount){%>
+												<div class="cart-total">
+													<h3>Order Summary</h3>
+													<p class="d-flex justify-content-between ">
+														<span>Subtotal</span>
+														<span class="subtotal">
+															₹ <%= Math.round(totalAmount) %>
+														</span>
+													</p>
+													<p class="d-flex ">
+														<span>Discount (<%=req.session.discount%>%)</span>
+														<span>- ₹ <%=Math.round((totalAmount)*req.session.discount /100) %></span>
+													</p>
+													<p class="d-flex justify-content-end ">
+														<span>Delivery</span>
+														<span>₹ 0.00</span>
+													</p>
+													<hr>
+													<p class="d-flex total-price">
+														<span>Total</span>
+
+														<span class="total-amount">₹<%=Math.round(totalAmount- (totalAmount*(req.session.discount/100))) %></span>
+
+													</p>
+												</div>
+
+												<%}else{%>
+													<div class="cart-total">
+
+														<h3>Order Summary</h3>
+														<p class="d-flex justify-content-between">
+															<span>Subtotal</span>
+															<span class="subtotal">
+																₹<%=Math.round(totalAmount)%>
+															</span>
+														</p>
+														<p class="d-flex justify-content-between">
+															<span>Discount(0%)</span>
+															<span>₹0</span>
+														</p>
+														<p class="d-flex justify-content-between">
+															<span>Delivery</span>
+															<span>₹0</span>
+														</p>
+														<hr>
+														<p class="d-flex total-price">
+															<span>Total</span>
+
+															<span class="total-amount">₹<%= Math.round(totalAmount) %></span>
+
+
+														</p>
+													</div>
+													<%}%>
+
+								</div>
+							</div>
+						</div>
+					</div>
+	</section>
+
+	<!-- coupon Modal -->
+	<div class="modal fade ftco-animate" id="couponModal" tabindex="-1" role="dialog" aria-labelledby="couponModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="couponModalLabel" style="font-weight: bold;">Available Coupons</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<% if (coupons && coupons.length> 0) { %>
+						<% coupons.forEach((coupon)=>{%>
+							<div class="container">
+								<div class="coupon-card">
+									<img src="\logo\stepexlogo.png" class="logo">
+									<h3>flat <%= coupon.discount %>% discount on all purchases above ₹<%=
+												coupon.min_price %>.</h3>
+									<div class="coupon-row">
+										<span id="cpnCode">
+											<%= coupon.coupon_code %>
+										</span>
+										<span id="cpnBtn">Apply</span>
+									</div>
+									<p>Valid Till: <%= coupon.validity.toLocaleDateString('en-US',{day: 'numeric' ,
+											month: 'short' , year: 'numeric' }) %>
+									</p>
+									<div class="circle1"></div>
+									<div class="circle2"></div>
+								</div>
+							</div>
+							<%}) %>
+								<% } else { %>
+									<p style="font-weight: 600;">No valid coupons available at the moment.</p>
+									<% } %>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<%- include("../user/add-edit-remove-address.ejs") %>
+
+		<script>
+
+			document.addEventListener('DOMContentLoaded', function () {
+				const selectAddressBtn = document.querySelector('.select-address');
+
+				selectAddressBtn.addEventListener('click', function () {
+					const selectedAddress = document.querySelector('input[name="address"]:checked');
+
+					if (selectedAddress) {
+						const addressIndex = selectedAddress.value;
+
+						fetch('/selectAddressForCheckout', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify({ addressIndex: addressIndex })
+						})
+							.then(response => {
+								if (response.ok) {
+									window.location.href = '/checkout-payment';
+								} else if (response.status === 400) {
+
+									response.json().then(data => {
+										Swal.fire({
+											icon: 'warning',
+											html: data.message,
+											confirmButtonText: 'OK'
+										});
+
+									});
+								}
+							})
+							.catch(error => console.error('Error:', error));
+					} else {
+
+						Swal.fire({
+							icon: 'warning',
+							text: 'Please select an address to continue!',
+							timer: 1500,
+							showConfirmButton: false
+						});
+					}
+				});
+			});
+
+
+			//apply coupon
+			document.addEventListener('DOMContentLoaded', function () {
+
+				const applyCouponBtns = document.querySelectorAll('#cpnBtn');
+				applyCouponBtns.forEach(btn => {
+					btn.addEventListener('click', function () {
+
+						const couponCode = this.parentNode.querySelector('#cpnCode').innerText;
+
+						fetch('/checkout/apply-coupon', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify({ couponCode: couponCode })
+						})
+							.then(response => {
+
+								if (response.ok) {
+									window.location.reload();
+								} else {
+
+								}
+							})
+							.catch(error => console.error('Error:', error));
+					});
+				});
+			});
+
+
+			//Remove coupon
+			document.addEventListener('DOMContentLoaded', function () {
+				const removeCouponBtn = document.getElementById('remove-coupon-btn');
+
+				removeCouponBtn.addEventListener('click', function () {
+					fetch('/checkout/remove-coupon', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					})
+						.then(response => {
+							if (response.ok) {
+
+								window.location.reload();
+							} else {
+
+							}
+						})
+						.catch(error => console.error('Error:', error));
+				});
+			});
+
+
+
+		</script>
+
+		<%- include("../layouts/footer.ejs") %>

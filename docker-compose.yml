@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  app:
+    image: stepex-e-com  # Replace with your actual image tag
+    container_name: stepex_app
+    ports:
+      - "3000:3000"  # Maps port 3000 on your machine to port 3000 in the container
+    env_file:
+      - .env  # Loads environment variables from the .env file
+    volumes:
+      - .:/app
+      - /app/node_modules  # Prevents node_modules from syncing with the host
+    restart: always  # Automatically restart the container if it stops
+    networks:
+      - stepex_network
+
+networks:
+  stepex_network:
+    driver: bridge

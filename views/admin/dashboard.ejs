@@ -1,0 +1,256 @@
+<%- include('../admin_layouts/header.ejs') %>
+
+  <div class="container-scroller">
+
+    <%-include('navbar.ejs')%>
+
+      <div class="container-fluid page-body-wrapper">
+
+        <%-include('sidebar.ejs')%>
+
+          <div class="main-panel">
+            <div class="content-wrapper">
+
+              <div class="page-header">
+                <h3 class="page-title">
+                  <span class="page-title-icon bg-gradient-primary text-white mr-2">
+                    <i class="mdi mdi-home"></i>
+                  </span> DASHBOARD
+                </h3>
+                <nav aria-label="breadcrumb">
+                  <ul class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">
+                      <a href="/admin/sales" class="text-primary">View Full Reports </a><i
+                        class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 stretch-card grid-margin">
+                  <div class="card bg-gradient-danger card-img-holder text-white">
+                    <div class="card-body">
+                      <img src="/admin_assets/images/dashboard/circle.svg" class="card-img-absolute"
+                        alt="circle-image" />
+                      <h4 class="font-weight-normal mb-3">Revenue <i
+                          class="mdi mdi-chart-line mdi-24px float-right"></i>
+                      </h4>
+                      <h2 class="mb-5">₹<%= Math.round(revenue) %></h2>
+                      <!-- <h6 class="card-text">Increased by 60%</h6> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 stretch-card grid-margin">
+                  <div class="card bg-gradient-info card-img-holder text-white">
+                    <div class="card-body">
+                      <img src="/admin_assets/images/dashboard/circle.svg" class="card-img-absolute"
+                        alt="circle-image" />
+                      <!-- <h4 class="font-weight-normal mb-3">Weekly Orders <i -->
+                      <h4 class="font-weight-normal mb-3">Sales <i
+                          class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                      </h4>
+                      <h2 class="mb-5"><%= salesCount %></h2>
+
+                      <!-- <h6 class="card-text">Decreased by 10%</h6> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 stretch-card grid-margin">
+                  <div class="card bg-gradient-success card-img-holder text-white">
+                    <div class="card-body">
+                      <img src="/admin_assets/images/dashboard/circle.svg" class="card-img-absolute"
+                        alt="circle-image" />
+                      <h4 class="font-weight-normal mb-3">Users<i class="mdi mdi-diamond mdi-24px float-right"></i>
+                      </h4>
+                      <h2 class="mb-5"><%= usersCount %></h2>
+                      <!-- <h6 class="card-text">Increased by 5%</h6> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="clearfix">
+                        <h4 class="card-title float-left">Visit And Sales Statistics</h4>
+                        <div id="visit-sale-chart-legend"
+                          class="rounded-legend legend-horizontal legend-top-right float-right"></div>
+                      </div>
+                      <div class="d-flex justify-content-end  my-4">
+                        <label for="time-period-select" class="mx-2 mt-1">Select Time Period:</label>
+                        <select id="time-period">
+                          <option>
+                            <%=currentPeriod%>
+                          </option>
+
+                          <% timePeriods.forEach((timePeriod)=>{%>
+                            <% if(timePeriod!==currentPeriod){%>
+                              <option>
+                                <%=timePeriod%>
+                              </option>
+                              <%} %>
+                                <%})%>
+
+
+                        </select>
+                        <div>
+                          <button id="apply-btn" class="btn btn-success btn-fw mx-2 p-2 ">Apply</button>
+                        </div>
+                      </div>
+
+                      <!-- <canvas id="sale-chart" class="mt-4"></canvas> -->
+                      <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div class="col-md-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="clearfix">
+                        <h4 class="card-title float-left">Visit And Sales Statistics</h4>
+                        <div id="visit-sale-chart-legend"
+                          class="rounded-legend legend-horizontal legend-top-right float-right"></div>
+                      </div>
+                      <canvas id="visit-sale-chart" class="mt-4"></canvas>
+                     
+                    </div>
+                  </div>
+                </div> -->
+                <!-- <div class="col-md-5 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Traffic Sources</h4>
+                      <canvas id="traffic-chart"></canvas>
+                      <div id="traffic-chart-legend" class="rounded-legend legend-vertical legend-bottom-left pt-4">
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+              </div>
+
+              <h4>Top selling Products</h4>
+              <div class="row">
+                <% if (products && products.length> 0) { %>
+                  <% products.forEach((product)=> { %>
+
+                    <div class="col-md-3 grid-margin stretch-card">
+                      <div class="card ">
+                        <img src="\uploads\productImages\<%=product.productDetails.images[0]%>" class="card-img-top"
+                          alt="Product Image" style="background-color: rgba(187, 214, 205, 0.452);">
+                        <div class="card-body">
+                          <h6 class="text-start ">
+                            <%= product.productDetails.name %>
+                          </h6>
+                          <p class="card-text">
+                            ₹<%= product.productDetails.price %>/-
+                          </p>
+                          <!-- <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                          <a href="#" class="btn btn-primary">Add to Cart</a> -->
+                        </div>
+                      </div>
+                    </div>
+                    <% }); %>
+                      <% } %>
+
+              </div>
+
+              <h4>Top selling Categories</h4>
+              <div class="row">
+
+                <% if (categories && categories.length> 0) { %>
+                  <% categories.forEach((category)=> { %>
+
+                    <div class="col-md-3 grid-margin stretch-card">
+                      <div class="card ">
+                        <img src="\uploads\categoryImages\<%=category.categoryDetails.image%>" class="card-img-top"
+                          alt="Product Image" style="background-color: rgba(187, 214, 205, 0.452);">
+                        <div class="card-body">
+                          <h5 class="text-start ">
+                            <%= category.categoryDetails.name %>
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                    <% }); %>
+                      <% } %>
+              </div>
+            </div>
+          </div>
+      </div>
+  </div>
+  </div>
+
+
+  <!-- 
+  <script src="/admin_assets/vendors/js/vendor.bundle.base.js"></script>
+  <script src="/admin_assets/vendors/chart.js/Chart.min.js"></script>
+  <script src="/admin_assets/js/jquery.cookie.js" type="text/javascript"></script>
+  <script src="/admin_assets/js/off-canvas.js"></script>
+  <script src="/admin_assets/js/hoverable-collapse.js"></script>
+  <script src="/admin_assets/js/misc.js"></script>
+  <script src="/admin_assets/js/dashboard.js"></script>
+  <script src="/admin_assets/js/todolist.js"></script> -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    
+    let xValues = [];
+    const currentPeriod = "<%=currentPeriod%>";
+    if (currentPeriod === "This Year") {
+      xValues = [
+        'Jan', 'Feb', 'Mar',
+        'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sept',
+        'Oct', 'Nov', 'Dec']
+    } else {
+      xValues = JSON.parse("<%=xValues%>");
+    }
+
+    const yValues = JSON.parse("<%= yValues%>");
+
+    console.log("xValues:", xValues, currentPeriod);
+    console.log("zValues:", yValues);
+
+    var lineColors = "rgba(255, 99, 132, 1)"; 
+
+    new Chart("myChart", {
+      type: "bar",
+      data: {
+        labels: xValues,
+        datasets: [{
+          label: 'Total Sales',
+          backgroundColor: lineColors,
+          borderColor: lineColors,
+          data: yValues,
+          fill: true
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true,
+            }
+          }],
+          xAxes: [{
+
+          }]
+        }
+      }
+    });
+
+    document.getElementById('apply-btn').addEventListener('click', function () {
+      const timePeriod = document.getElementById('time-period').value;
+      console.log("time-period:", timePeriod)
+      window.location.href = `/admin/dashboard?timePeriod=${timePeriod}`;
+    });
+  </script>
+
+  <%- include('../admin_layouts/footer.ejs') %>
