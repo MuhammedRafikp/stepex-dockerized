@@ -3,9 +3,10 @@ kind: Service
 metadata:
   name: stepex-e-com
 spec:
-  type: LoadBalancer  # Use NodePort for local clusters like Minikube
+  type: NodePort  # Changed to NodePort for local clusters like Minikube
   ports:
     - port: 80  # External port
       targetPort: 3000  # Port your application listens on
+      nodePort: 30001  # Optional: Specify a custom NodePort, or let Kubernetes assign one
   selector:
     app: stepex-e-com

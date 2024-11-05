@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: stepex-e-com
 spec:
-  replicas: 1  # Number of replicas you want to run
+  replicas: 1
   selector:
     matchLabels:
       app: stepex-e-com
@@ -14,6 +14,19 @@ spec:
     spec:
       containers:
       - name: stepex-e-com
-        image: rafikp10/stepex-e-com:latest # Use your image name here
+        image: rafikp10/stepex-e-com:latest
         ports:
-        - containerPort: 3000  # Change this to your application's port
+        - containerPort: 3000
+        env:
+        - name: MONGODB_URI
+          value: "mongodb+srv://rafikpmty:hPVIsrVXBihPdKWd@cluster0.i3fnlhj.mongodb.net/stepex"
+        - name: PORT
+          value: "3000"
+        - name: APP_EMAIL_ID
+          value: "rafikpmty@gmail.com"
+        - name: APP_PASSWORD
+          value: "gxbwbnicdhrdkcsi"
+        - name: RAZORPAY_ID_KEY
+          value: "rzp_test_b0szQvJZ7F009R"
+        - name: RAZORPAY_SECRET_KEY
+          value: "D1VdaqMPK600mUoJe9HbkgUl"
