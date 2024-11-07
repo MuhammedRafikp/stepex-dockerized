@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: stepex-e-com  # Replace with your actual image tag
+    image: stepex-e-com  # image tag
     container_name: stepex_app
     ports:
       - "3000:3000"  # Maps port 3000 on your machine to port 3000 in the container
